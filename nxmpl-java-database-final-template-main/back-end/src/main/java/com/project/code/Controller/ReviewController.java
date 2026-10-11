@@ -30,29 +30,29 @@ public class ReviewController {
     public Map<String,Object> getReviews(@PathVariable long storeId, @PathVariable long productId)
     {
         Map<String, Object> map = new HashMap<>();
-        List<Review> reviews = reviewRepository.findByStoreIdAndProductId(storeId,productId);
+         List<Review> reviews = reviewRepository.findByStoreIdAndProductId(storeId,productId);
 
-        List<Map<String, Object>> reviewsWithCustomerNames = new ArrayList<>();
+         List<Map<String, Object>> reviewsWithCustomerNames = new ArrayList<>();
 
-        // For each review, fetch customer details and add them to the response
-        for (Review review : reviews) {
-            Map<String, Object> reviewMap = new HashMap<>();
-            reviewMap.put("review", review.getComment());
-            reviewMap.put("rating", review.getRating());
+         // For each review, fetch customer details and add them to the response
+         for (Review review : reviews) {
+             Map<String, Object> reviewMap = new HashMap<>();
+             reviewMap.put("review", review.getComment());
+             reviewMap.put("rating", review.getRating());
 
-            // Fetch customer details using customerId
-            Customer customer = customerRepository.findByid(review.getCustomerId());
-            if (customer != null) {
-                reviewMap.put("customerName", customer.getName());
-            } else {
-                reviewMap.put("customerName", "Unknown");
-            }
+             // Fetch customer details using customerId
+             Customer customer = customerRepository.findByid(review.getCustomerId());
+             if (customer != null) {
+                 reviewMap.put("customerName", customer.getName());  
+             } else {
+                 reviewMap.put("customerName", "Unknown");
+             }
 
-            reviewsWithCustomerNames.add(reviewMap);
-        }
+             reviewsWithCustomerNames.add(reviewMap);
+         }
 
-        map.put("reviews", reviewsWithCustomerNames);
-        return map;
+         map.put("reviews", reviewsWithCustomerNames);
+         return map;
 
     }
 
