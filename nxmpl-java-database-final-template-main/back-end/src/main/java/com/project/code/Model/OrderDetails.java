@@ -1,47 +1,43 @@
 package com.project.code.Model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class OrderDetails {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonBackReference("customer-order")
-    private Customer customer ;
+    @JsonManagedReference
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @JsonBackReference("store-order")
-    private Store store ;
-
-
-    private Double totalPrice ;
-
-    private LocalDateTime date ;
-
-    @OneToMany(mappedBy = "order" , fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<OrderItem> orderItems ;
+    private Store store;
 
-    public OrderDetails(){}
-    public OrderDetails(Customer customer , Store store , Double totalPrice , LocalDateTime date){
-        this.customer = customer ;
-        this.store = store;
-        this.totalPrice = totalPrice ;
-        this.date = date ;
-    }
+    private Double totalPrice;
+    private LocalDateTime date;
 
+    @OneToMany(mappedBy = "order",fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<OrderItem> orderItems;
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -89,5 +85,15 @@ public class OrderDetails {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    // Constructors (if necessary)
+    public OrderDetails() {}
+
+    public OrderDetails(Customer customer, Store store, Double totalPrice, LocalDateTime date) {
+        this.customer = customer;
+        this.store = store;
+        this.totalPrice = totalPrice;
+        this.date = date;
     }
 }
