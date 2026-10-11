@@ -1,44 +1,43 @@
 package com.project.code.Model;
 
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
 
 @Entity
 public class Customer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @Valid
     @NotNull(message = "Name cannot be null")
     private String name;
-
     @NotNull(message = "Email cannot be null")
     private String email;
-
-    @NotNull(message = "Phone cannot be null")
+    @NotNull(message = "Phone No cannot be null")
     private String phone;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderDetails> orders;
 
     // Getters and Setters
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,12 +65,20 @@ public class Customer {
         this.phone = phone;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderDetails> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderDetails> orders) {
         this.orders = orders;
     }
-}
 
+    // Constructors (if necessary)
+    public Customer() {}
+
+    public Customer(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+}
